@@ -1,0 +1,188 @@
+@import url('https://fonts.googleapis.com/css2?family=Playwrite+IN:wght@400&display=swap');
+
+:root {
+    --space-cadet: #22223bff;
+    --ultra-violet: #4a4e69ff;
+    --rose-quartz: #9a8c98ff;
+    --pale-dogwood: #c9ada7ff;
+    --pale-dogwood-blank: rgb(229, 205, 199);
+    --isabelline: #f2e9e4ff;
+}
+
+a.button {
+    padding: 1px 6px;
+    border: 1px outset buttonborder;
+    border-radius: 3px;
+    color: buttontext;
+    background-color: buttonface;
+    text-decoration: none;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    color: var(--space-cadet);
+}
+
+button {
+    display: block;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: var(--isabelline);
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+
+    background-color: var(--pale-dogwood);
+    padding: 1rem;
+}
+
+.logo {
+    font-family: "Playwrite IN", serif;
+    font-optical-sizing: auto;
+    color: var(--space-cadet);
+    font-weight: 400;
+    font-style: normal;
+    margin-left: 1rem;
+}
+
+/* pallet style */
+
+.pallete {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    align-content: flex-start;
+
+    padding: 1rem;
+}
+
+
+.order {
+    background-color: var(--pale-dogwood);
+    width: 15rem;
+    height: 15rem;
+    margin: 1rem;
+    border-radius: 0.5rem;
+    opacity: 0.7;
+    box-shadow: 0px 5px 10px 2px rgba(0, 0, 0, 0.15);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: 0.5s;
+}
+
+.order:hover {
+    transition: 0.5s;
+    opacity: 1;
+}
+
+.blank-order {
+    background-color: var(--pale-dogwood-blank);
+    width: 15rem;
+    height: 15rem;
+    margin: 1rem;
+    border-radius: 0.5rem;
+    opacity: 0.7;
+    transition: 0.5s;
+    text-align: center;
+    cursor: pointer;
+}
+
+.blank-order:hover {
+    transition: 0.5s;
+    opacity: 1;
+}
+
+.blank-cross {
+    width: 100%;
+    font-size: 10rem;
+}
+
+.order-header {
+    display: flex;
+    height: 2.3rem;
+    width: 100%;
+    padding: 0.5rem;
+    justify-content: space-between;
+    background-color: var(--rose-quartz);
+    border-radius: 0.5rem 0.5rem 0 0;
+}
+
+.order-table {
+    height: 100%;
+    padding-top: 0.1rem;
+    text-align: center;
+}
+
+.order-status {
+    padding: 0.1rem 0.6rem;
+    border-radius: 0.5rem;
+    background-color: yellowgreen;
+
+}
+
+.order-total-price {
+    height: 1.4rem;
+    margin: 0.7rem;
+    padding-top: 0.2rem;
+    text-align: end;
+    border-top: black 1px solid;
+}
+
+.order-items {
+    padding: 0.9rem;
+    padding-top: 0.7rem;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.order-items > ul > li {
+    display: flex;
+    justify-content: space-between;
+}
+
+li > span {
+    width: 100%;
+    height: 2rem;
+}
+
+.modal {
+    display: none;
+    background: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    top: 0;
+    left: 0;   
+    right: 0;
+    bottom: 0;
+    z-index: 1000;
+    transition: 0.5s;
+}
+
+.modal:target {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.3s;
+}
+
+.modal-dialog {
+    background-color: var(--pale-dogwood);
+    width: 60%;
+    height: 40rem;
+    margin: 1rem;
+    border-radius: 0.5rem;
+    box-shadow: 0px 5px 10px 2px rgba(0, 0, 0, 0.15);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: 0.5s;
+}
