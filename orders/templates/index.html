@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Miko Hub</title>
     <link rel="stylesheet" href="{% static "style.css" %}">
+    <link rel="stylesheet" href="{% static "modal.css" %}">
 </head>
 <body>
     <header>
@@ -18,47 +19,16 @@
     </header>
     <div class="pallete">
         {% for order in orders  %}
-        <div class="order">
-            <div class="order-header">
-                <div class="order-table">Стол: {{order.table_number}}</div>
-                <div class="order-status">{{ order.status }}</div>
-                <a href="/delete_order?id={{ order.id }}" class="button">Delete</a>
-            </div>
-            <div class="order-items">
-                <ul>
-                {% for item in order.items  %}
-                <li>
-                    <span>{{ item.name }} x {{ item.amount }}</span> <span style="text-align: right">{{ item.price }} у.е</span>
-                </li>
-                {% endfor %}
-                </ul>
-            </div>
-            <div class="order-total-price">
-                Итог: {{ order.total_price }} у.е 
-            </div>
-        </div>
+            {% include "order_block.html" with order=order %}
         {% endfor %}
-
-        <a href="#modal-new-order" style="display: block; text-decoration: none;">
+        <a href="/new_order" style="display: block; text-decoration: none;">
             <div class="blank-order">
                 <div class="blank-cross">+</div>
                 <span>Добавить стол</span>
             </div>
         </a>
-        
-        <div id="modal-new-order" class="modal" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-header">
-                    <a href="#close">Закрыть</a>
-                </div>
-                <div class="modal-body">
 
-                </div>
-                <div class="modal-footer">
-
-                </div>
-            </div>
-        </div>
+        {% block content %}{% endblock content %}
     </div>
 </body>
 </html>

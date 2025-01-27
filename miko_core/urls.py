@@ -22,5 +22,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', orders.views.index),
     path('delete_order', orders.views.delete_order),
-    path('create_order', orders.views.create_order)
+    path('new_order', orders.views.create_new_order),
+    path('order/<int:id>', orders.views.order_page),
+    path('update_order/', orders.views.update_order),
+    path('update_status', orders.views.update_status),
+    path('update_table_number', orders.views.update_header),
+    path('delete_item', orders.views.delete_item)
 ]

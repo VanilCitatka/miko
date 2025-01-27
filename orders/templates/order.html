@@ -1,0 +1,62 @@
+{% extends "index.html" %}
+	
+{% load static %}
+
+
+{% block content %}
+<div id="modal-new-order" class="modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <form action="/update_table_number" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="id" value="{{ order.id }}">
+            <div class="modal-header">
+                <div class="table_num">
+                    <label for="table_num">Стол: </label>
+                    <input name="table_num"type="text" value="{{ order.table_number}}">
+                </div>
+                <button value="{{order.status}}" name="status">
+                    {% if order.status == 'В ожидании' %}
+                        <div class="status blue">{{ order.status }}</div>
+                    {% elif order.status == 'Готово'%}
+                        <div class="status green">{{ order.status }}</div>
+                    {% else %}
+                        <div class="status red">{{ order.status }}</div>
+                    {% endif %}
+                </button>
+                <button submit><img src="{% static "icons/close.svg" %}" alt="X"></button>
+            </div>
+        </form>
+        <div class="modal-body">
+            <table>
+                <tr>
+                    <th>Название</th>
+                    <th>Количество</th>
+                    <th>Сумма</th>
+                    <th></th>
+                </tr>
+                {% for item in order.items %}
+                <tr>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.amount }}</td>
+                    <td>{{ item.price }}</td>
+                    <td><a href="/delete_item?id={{ order.id }}&name={{ item.name }}"><img src="{% static "icons/trash.svg" %}" alt="del"></a></td>
+                </tr>
+                {% endfor %}
+            </table>
+            <div class="check_end">Итог: {{ order.check_end}}</div>
+        </div>
+        <div class="modal-footer">
+            <form action="/update_order/?id={{ order.id }}" method="POST">
+                    {% csrf_token %}
+                    {{ form.as_div }}
+                <div>
+                    <button type="submit">
+                        <img src="{% static "icons/add.svg" %}" alt="+">
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
