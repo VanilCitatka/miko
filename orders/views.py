@@ -1,36 +1,40 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
-
-import json 
+from django.views.generic import ListView
+from django.contrib.postgres.search import SearchVector
 
 from orders.froms import ItemForm
 from .models import Order
 
 # Create your views here.
-def index(request):
-    orders = [{
-        'id': order.id,
-        'table_number': order.table_number,
-        'total_price': order.total_price,
-        'status': order.status,
-        'items': order.items
-    } for order in Order.objects.all()]
 
+class HubHome(ListView):
+    model = Order
+    template_name='index.html'
+    context_object_name = 'orders'
 
-    return render(request, 'index.html', context={'orders': orders})
+    def get_queryset(self):
+        if search_query := self.request.GET.get('search'):
+            return super().get_queryset().annotate(
+                search=SearchVector('table_number', 'status')
+            ).filter(search=search_query)
+        return super().get_queryset().order_by('id')
+
+def order_page(request, id):
+    order = Order.objects.get(id=id)
+    bg_orders = Order.objects.all().order_by('id')
+    form = ItemForm()
+
+    return render(request, 'order.html', context={'orders': bg_orders,'order': order, 'form': form})
 
 def create_new_order(request):
     new_order = Order.objects.create(table_number=1)    
     return HttpResponseRedirect(f'/order/{new_order.id}')
 
 def delete_item(request):
-    item_name = request.GET.get('name')
+    item_id = int(request.GET.get('item_id'))
     order = Order.objects.get(id=request.GET.get('id'))
-    print(order.items)
-    for item_id in range(len(order.items)):
-        if order.items[item_id]['name'] == item_name:
-            del order.items[item_id]
-            break
+    del order.items[item_id]
     order.save()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
@@ -44,29 +48,17 @@ def update_header(request):
     print(request.POST)
     order = Order.objects.get(id=request.POST.get('id'))
     order.table_number = int(request.POST.get('table_num'))
+
     status = request.POST.get('status', None)
     if status:
         order.status = order.next_status()
         order.save()
         return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+    
     order.save()
     return HttpResponseRedirect('/')
 
-def order_page(request, id):
-    order = Order.objects.get(id=id)
-    itemform = ItemForm()
-    order = {
-        'id': order.id,
-        'table_number': order.table_number,
-        'total_price': order.total_price,
-        'status': order.status,
-        'items': order.items,
-        'check_end': sum(int(item['price']) for item in order.items)
-    }
-
-    return render(request, 'order.html', context={'order': order, 'form': itemform})
-
-def update_order(request):
+def add_item(request):
     if request.method == 'POST':
         form = ItemForm(request.POST)
         if form.is_valid():
@@ -83,6 +75,13 @@ def update_order(request):
     return HttpResponseRedirect('/')
 
 def delete_order(request):
-    id = request.GET.get('id')
+    id = request.POST.get('id')
     Order.objects.get(id=id).delete()
     return HttpResponseRedirect('/')
+
+def shift_end(request):
+    paid_orders = Order.objects.filter(status=Order.OrderStatus.PAID)
+
+    shift_sum = sum(paid_order.total_price for paid_order in paid_orders)
+
+    return render(request, 'shift_end.html', context={'orders': paid_orders, 'shift_sum': shift_sum})

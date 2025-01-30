@@ -6,7 +6,7 @@
 {% block content %}
 <div id="modal-new-order" class="modal" aria-hidden="true">
     <div class="modal-dialog">
-        <form action="/update_table_number" method="POST">
+        <form action="/update_order_header" method="POST">
             {% csrf_token %}
             <input type="hidden" name="id" value="{{ order.id }}">
             <div class="modal-header">
@@ -30,28 +30,28 @@
             <table>
                 <tr>
                     <th>Название</th>
-                    <th>Количество</th>
+                    <th>Кол-во</th>
                     <th>Сумма</th>
-                    <th></th>
+
                 </tr>
                 {% for item in order.items %}
                 <tr>
                     <td>{{ item.name }}</td>
                     <td>{{ item.amount }}</td>
                     <td>{{ item.price }}</td>
-                    <td><a href="/delete_item?id={{ order.id }}&name={{ item.name }}"><img src="{% static "icons/trash.svg" %}" alt="del"></a></td>
+                    <td><a href="/delete_item?id={{ order.id }}&item_id={{ forloop.counter0 }}"><img src="{% static "icons/trash.svg" %}" alt="del"></a></td>
                 </tr>
                 {% endfor %}
             </table>
-            <div class="check_end">Итог: {{ order.check_end}}</div>
+            <div class="check_end">Итог: <span style="float: right;"> {{ order.total_price}} руб.</span></div>
         </div>
         <div class="modal-footer">
-            <form action="/update_order/?id={{ order.id }}" method="POST">
+            <form action="/add_item/?id={{ order.id }}" method="POST">
                     {% csrf_token %}
                     {{ form.as_div }}
                 <div>
                     <button type="submit">
-                        <img src="{% static "icons/add.svg" %}" alt="+">
+                        <img src="{% static "icons/add.svg" %}" style="margin-top: 4px;"alt="+">
                     </button>
                 </div>
             </form>

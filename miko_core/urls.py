@@ -14,18 +14,27 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
-from django.urls import path
+
+from django.urls import path, include
+import orders.crud
 import orders.views
 
+crud_api = [
+    path('all', orders.crud.get_all_orders),
+    path('create_new_order', orders.crud.create_new_order),
+    path('get_by_id', orders.crud.get_order_by_id),
+    path('delete_by_id', orders.crud.delete_order)
+]
+
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', orders.views.index),
+    path('', orders.views.HubHome.as_view()),
     path('delete_order', orders.views.delete_order),
     path('new_order', orders.views.create_new_order),
     path('order/<int:id>', orders.views.order_page),
-    path('update_order/', orders.views.update_order),
+    path('add_item/', orders.views.add_item),
     path('update_status', orders.views.update_status),
-    path('update_table_number', orders.views.update_header),
-    path('delete_item', orders.views.delete_item)
+    path('update_order_header', orders.views.update_header),
+    path('delete_item', orders.views.delete_item),
+    path('shift_end', orders.views.shift_end),
+    path('api/', include(crud_api))
 ]

@@ -10,14 +10,18 @@
 </head>
 <body>
     <header>
-        <div class="logo">Miko</div>
-        <div class="menu-btns">
-            <button type="button">
-                YES
-            </button>
+        <div class="logo"><a href="/">Miko</a></div>
+        <div class="search-bar">
+            <form action="" method="get">
+                <input name="search" type="text">
+            </form>
         </div>
+        <a href="shift_end" class="se_btn">
+            Итог смены
+        </a>
     </header>
     <div class="pallete">
+        {% block content %}{% endblock content %}
         {% for order in orders  %}
             {% include "order_block.html" with order=order %}
         {% endfor %}
@@ -27,8 +31,6 @@
                 <span>Добавить стол</span>
             </div>
         </a>
-
-        {% block content %}{% endblock content %}
     </div>
 </body>
 </html>
