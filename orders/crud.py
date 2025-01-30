@@ -1,6 +1,6 @@
 from django.http import JsonResponse
 from .models import Order
-
+from django.views.decorators.csrf import csrf_exempt
 import json
 
 # Для проверяющего❤️:
@@ -47,6 +47,9 @@ def json_handler(request):
         }
     return response
 
+
+
+@csrf_exempt
 def get_all_orders(request):
     if request.method == 'GET':
         ord_json = {
@@ -56,6 +59,8 @@ def get_all_orders(request):
         }
         return JsonResponse(ord_json, json_dumps_params=JSON_DUMPS_PARAMS)
 
+
+@csrf_exempt
 def create_new_order(request):
 
     """
@@ -113,6 +118,8 @@ def create_new_order(request):
     resp = {'status': json_request['status'], 'id': new_order.id}
     return JsonResponse(resp, json_dumps_params=JSON_DUMPS_PARAMS)
 
+
+@csrf_exempt
 def get_order_by_id(request):
     """
     Correct json request: 
@@ -145,6 +152,8 @@ def get_order_by_id(request):
         return JsonResponse(response, json_dumps_params=JSON_DUMPS_PARAMS)
     return JsonResponse(response, json_dumps_params=JSON_DUMPS_PARAMS)
 
+
+@csrf_exempt
 def delete_order(request):
     """
     Correct json data:

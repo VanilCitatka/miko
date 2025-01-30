@@ -84,7 +84,7 @@ WSGI_APPLICATION = 'miko_core.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': env('POSTGRES_DB_NAME'),
+        'NAME': env('POSTGRES_DB_USER'),
         'USER': env('POSTGRES_DB_USER'),
         'PASSWORD': env('POSTGRES_DB_PASSWORD'),
         'HOST': env('POSTGRES_DB_HOST'),
